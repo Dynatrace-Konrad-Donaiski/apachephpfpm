@@ -1,5 +1,5 @@
 nginx:
-  image: nginx:latest
+  image: nginx:1.11.1
   ports:
     - "8888:8888"
     - "8889:8889"
@@ -13,7 +13,6 @@ nginx:
     ENCRYPTIONKEY: 731aea833710535779fe8c7c49bc6c4d
   links:
       - "php:php"
-      - "mysql:mysql"
   volumes:
     - ./logs/nginx:/var/log/nginx
     - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
@@ -27,7 +26,7 @@ php:
   volumes:
       - ./www:/var/www/html:rw
 mysql:
-  image: mysql:latest
+  image: mysql:5.7.13
   ports:
     - "3306:3306"
   environment:
