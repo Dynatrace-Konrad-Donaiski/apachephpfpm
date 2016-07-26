@@ -1,7 +1,6 @@
-nginx:
+nginxphpfpm:
   image: nginx:1.11.1
   ports:
-    - "8888:8888"
     - "8889:8889"
   environment:
     ADMIN_USERNAME: admin
@@ -12,19 +11,19 @@ nginx:
     ADMIN_EMAIL: admin@example.com
     ENCRYPTIONKEY: 731aea833710535779fe8c7c49bc6c4d
   links:
-      - "php:php"
+      - "phpfpm:php"
   volumes:
     - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
     - ./config/nginx/fastcgi.conf:/etc/nginx/fastcgi.conf
   volumes_from:
-    - php
-php:
+    - phpfpm
+phpfpm:
   build: images/php
   links:
-    - "mysql:mysql"
+    - "mysqlphpfpm:mysql"
   volumes:
       - ./www:/var/www/html:rw
-mysql:
+mysqlphpfpm:
   image: mysql:5.7.13
   ports:
     - "3306:3306"
