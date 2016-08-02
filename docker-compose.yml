@@ -1,7 +1,14 @@
 nginxphpfpm:
   image: nginx:1.11.1
   ports:
+    - "7777:7777"
     - "8889:8889"
+    - "8888:8888"
+
+  ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
   environment:
     ADMIN_USERNAME: admin
     ADMIN_FIRSTNAME: Admin
@@ -16,13 +23,18 @@ nginxphpfpm:
     - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
     - ./config/nginx/fastcgi.conf:/etc/nginx/fastcgi.conf
   volumes_from:
-    - phpfpm
+      - phpfpm
 phpfpm:
   build: images/php
   links:
     - "mysqlphpfpm:mysql"
+  ulimits:
+      nofile:
+        soft: 100000
+        hard: 100000
   volumes:
       - ./www:/var/www/html:rw
+      - ./tmp:/tmp:rw
 mysqlphpfpm:
   image: mysql:5.7.13
   expose:
